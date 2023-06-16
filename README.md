@@ -1,9 +1,13 @@
 # AcomicsLoader
-One more picture loader for acomics.ru :)
-
-# usage: Acomics_Loader.py [-h] [-r] [-b FIRST_PAGE] [-e LAST_PAGE] URL [DIR]
 
 Acomics serial image grabber v.0.1
+
+One more picture loader for acomics.ru :)
+
+# usage: 
+
+Acomics_Loader.py [-h] [-r] [-b FIRST_PAGE] [-e LAST_PAGE] URL [DIR]
+
 
 ## positional arguments:
 
