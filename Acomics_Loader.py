@@ -74,7 +74,6 @@ def main():
     
     dir_name = args.DIR if args.DIR else url.path.replace('~','')
 
-
     # Prefetch comic parameters
     page = get_parsed_page(source_url)    
     if page.error:
@@ -84,8 +83,8 @@ def main():
     comic = page.parsed
 
     error_techinfo = comic.find('section',{'class':'errorTechInfo'})
-    comic_title    = comic.find('meta', {'property':'og:title'}) 
-    comic_desc     = comic.find('meta', {'property':'og:description'}) 
+    comic_title    = comic.find('meta', {'property':'og:title'}).get('content')
+    comic_desc     = comic.find('meta', {'property':'og:description'}).get('content')
     first_page     = int(comic.find('a', {'class':'read1'}).get('href').split('/')[-1])
     last_page      = int(comic.find('a', {'class':'read2'}).get('href').split('/')[-1])
 
@@ -93,7 +92,21 @@ def main():
         print(f"Error: No comic found at {source_url}")
         sys.exit(1)
 
-    print(f"\nComic title: {comic_title.get('content')}\nDescription: {comic_desc.get('content')}\nFirst page: {first_page}\nLast page: {last_page}\n")
+
+    description_text = f"""
+    Comic title: {comic_title}
+    Description: {comic_desc}
+    Number of pages: {last_page - first_page + 1}
+    Download date: {time.ctime}
+    """
+    
+    print(f"\n{description_text}\n")
+
+    # Create comic directory and descriprion
+    Path(dir_name).mkdir(parents=True, exist_ok=True) # Make dir
+    desc_file = f"{dir_name}/description-{comic_title}.txt"
+    open(desc_file,'w').write(description_text)
+    
 
     if args.first_page: first_page = args.first_page
     if args.last_page: last_page = args.last_page
@@ -124,10 +137,6 @@ def main():
                 if image_src:
                     image_url = f"{url_prefix}/{main_image.get('src')}"
                     file_ext = image_src.split('.')[-1]
-                    if not dir_made:
-                        Path(dir_name).mkdir(parents=True, exist_ok=True) # Make dir
-                        dir_made = True
-                    
                     image_file = f"{dir_name}/page-{page_iterator:04}-{main_image.get('alt')}.{file_ext}"
                     if not os.path.exists(image_file) or args.rewrite:
                         image_req = requests.get(image_url, allow_redirects=True)
