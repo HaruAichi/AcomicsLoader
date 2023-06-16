@@ -1,17 +1,17 @@
 # AcomicsLoader
-One more picture loader for acomics.ru
+One more picture loader for acomics.ru :)
 
-usage: Acomics_Loader.py [-h] [-r] [-b FIRST_PAGE] [-e LAST_PAGE] URL [DIR]
+# usage: Acomics_Loader.py [-h] [-r] [-b FIRST_PAGE] [-e LAST_PAGE] URL [DIR]
 
 Acomics serial image grabber v.0.1
 
-positional arguments:
+## positional arguments:
 
   URL                   Comic URL https://acomics.ru/~NAME or just NAME
 
   DIR                   Optional directory path to save pages
 
-optional arguments:
+## optional arguments:
 
   -h, --help            - show this help message and exit
 
