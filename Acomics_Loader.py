@@ -67,7 +67,7 @@ def main():
 
     url = urlparse(args.URL)
     
-    source_url = f"{args.URL}/1" if (url.scheme == 0) else f"{default_url_prefix}/~{args.URL}" # Starting HTML link
+    source_url = f"{args.URL}" if (url.scheme == 0) else f"{default_url_prefix}/~{args.URL}" # Starting HTML link
     url_prefix = f"{url.scheme}://{url.netloc}" if url.scheme else default_url_prefix          # URL prefix for image download
     
     print(f"{program_name} v.{program_version}\n\nLoading comic data from {source_url}")
@@ -97,7 +97,8 @@ def main():
     Comic title: {comic_title}
     Description: {comic_desc}
     Number of pages: {last_page - first_page + 1}
-    Download date: {time.ctime}
+    URL: {source_url}
+    Download date: {time.ctime()}
     """
     
     print(f"\n{description_text}\n")
