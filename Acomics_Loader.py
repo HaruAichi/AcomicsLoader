@@ -4,9 +4,10 @@
 # Developed by Aichi Haru
 # Strongly violates authors "no download" right :)
 
-# Version 0.1 (2023-06-16)
+# Version 0.2 (2023-06-23)
 
 # --- Change log ---
+# Version 0.2 (2023-06-23) - --info key added
 # Version 0.1 (2023-06-16) - Initial release
 
 
@@ -27,7 +28,7 @@ from urllib.parse import urlparse
 from pathlib import Path
 
 program_name = 'Acomics serial image grabber'
-program_version = '0.1'
+program_version = '0.2'
 
 class container():
     def __str__(self):
@@ -55,6 +56,7 @@ def main():
     default_url_prefix = "https://acomics.ru"
 
     parser = argparse.ArgumentParser(description=f"{program_name} v.{program_version}")
+    parser.add_argument('-i', '--info', dest='info', default=False, action='store_true', help="Show comics info")
     parser.add_argument('-r', '--rewrite', dest='rewrite', default=False, action='store_true', help="Rewrite existing files")
     parser.add_argument('-b', '--first-page', type=int, dest='first_page', default=1, help="First page number")
     parser.add_argument('-e', '--last-page',  type=int, dest='last_page',  default=0, help="Last page number")
@@ -92,7 +94,6 @@ def main():
         print(f"Error: No comic found at {source_url}")
         sys.exit(1)
 
-
     description_text = f"""
     Comic title: {comic_title}
     Description: {comic_desc}
@@ -102,6 +103,9 @@ def main():
     """
     
     print(f"\n{description_text}\n")
+
+    if args.info: sys.exit() # Just show summary
+
 
     # Create comic directory and descriprion
     Path(dir_name).mkdir(parents=True, exist_ok=True) # Make dir
