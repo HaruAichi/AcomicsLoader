@@ -57,6 +57,7 @@ def main():
 
     parser = argparse.ArgumentParser(description=f"{program_name} v.{program_version}")
     parser.add_argument('-i', '--info', dest='info', default=False, action='store_true', help="Show comics info")
+    parser.add_argument('-n', '--new', dest='new', default=False, action='store_true', help="Download only new pages")
     parser.add_argument('-r', '--rewrite', dest='rewrite', default=False, action='store_true', help="Rewrite existing files")
     parser.add_argument('-b', '--first-page', type=int, dest='first_page', default=1, help="First page number")
     parser.add_argument('-e', '--last-page',  type=int, dest='last_page',  default=0, help="Last page number")
@@ -142,7 +143,7 @@ def main():
                 if image_src:
                     image_url = f"{url_prefix}/{main_image.get('src')}"
                     file_ext = image_src.split('.')[-1]
-                    image_file = f"{dir_name}/page-{page_iterator:04}-{main_image.get('alt')}.{file_ext}"
+                    image_file = f"{dir_name}/page-{page_iterator:04}-{main_image.get('alt').replace('/','_')}.{file_ext}"
                     if not os.path.exists(image_file) or args.rewrite:
                         image_req = requests.get(image_url, allow_redirects=True)
                         if (image_req.status_code == 200):
