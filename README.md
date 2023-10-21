@@ -1,6 +1,6 @@
 # AcomicsLoader
 
-Acomics serial image grabber v.0.1
+Acomics serial image grabber v.0.3
 
 One more picture loader for acomics.ru :)
 
@@ -23,5 +23,10 @@ Acomics_Loader.py [-h] [-r] [-b FIRST_PAGE] [-e LAST_PAGE] URL [DIR]
 
   -e LAST_PAGE,  --last-page LAST_PAGE   - Last page number
 
-## Limitations: 
-Still does not support age-restricted comics due to two-step site authorization
+## change log:
+
+Version 0.3 (2023-10-21) - ageRestrict cookie set to avoid content limitations
+
+Version 0.2 (2023-06-23) - --info key added
+
+Version 0.1 (2023-06-16) - Initial release

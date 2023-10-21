@@ -7,6 +7,7 @@
 # Version 0.2 (2023-06-23)
 
 # --- Change log ---
+# Version 0.3 (2023-10-21) - ageRestrict cookie set to avoid content limitations
 # Version 0.2 (2023-06-23) - --info key added
 # Version 0.1 (2023-06-16) - Initial release
 
@@ -28,7 +29,7 @@ from urllib.parse import urlparse
 from pathlib import Path
 
 program_name = 'Acomics serial image grabber'
-program_version = '0.2'
+program_version = '0.3'
 
 class container():
     def __str__(self):
@@ -130,9 +131,11 @@ def main():
     while True:
     
         step_timer = f"{int(time.time()-start_time):05} sec"
-        source = requests.get(source_url)
+        source = requests.get(source_url, cookies={"ageRestrict":"17"})
         if (source.status_code == 200):
-
+        
+            # print(source.text)
+        
             soup = bs4.BeautifulSoup(source.text, features="lxml")
             main_image = soup.find('img',{'id':'mainImage'})
             next_page = soup.find('a', {'class':'button large comic-nav-next'})
@@ -154,7 +157,9 @@ def main():
                 else:
                     print(f"[{step_timer}] Page {page_iterator}: Warning: cannot load image from page {source_url}")
                 
-            #print(f"Image: htttps://acomics.ru/{main_image.get('src')}, File: {main_image.get('alt')}, Save name: page-{page_counter}-{main_image.get('alt')}, Next page: {next_page.get('href')}")
+            #print(f"Image: https://acomics.ru/{main_image.get('src','???')}, File: {main_image.get('alt','???')}, Save name: page-{page_counter}-{main_image.get('alt')}, Next page: {next_page.get('href','???')}")
+            #print(f'main_image={main_image}, next_page={next_page}')
+
             if next_page == None or page_iterator == last_page: break
             page_counter  += 1
             page_iterator += 1
