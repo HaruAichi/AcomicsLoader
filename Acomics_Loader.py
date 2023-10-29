@@ -4,9 +4,11 @@
 # Developed by Aichi Haru
 # Strongly violates authors "no download" right :)
 
-# Version 0.2 (2023-06-23)
+# Version 0.4 (2023-10-29)
 
 # --- Change log ---
+
+# Version 0.4 (2023-10-29) - --new key added, some first-last page fixes
 # Version 0.3 (2023-10-21) - ageRestrict cookie set to avoid content limitations
 # Version 0.2 (2023-06-23) - --info key added
 # Version 0.1 (2023-06-16) - Initial release
@@ -16,7 +18,6 @@
 # 1. python3
 # 2. beautifulsoup v4. Install like apt-get install python3-bs4, pip3 install beautifulsoup4 or somehow either
 # 3. argparse modile
-
 
 
 import os,sys
@@ -29,7 +30,7 @@ from urllib.parse import urlparse
 from pathlib import Path
 
 program_name = 'Acomics serial image grabber'
-program_version = '0.3'
+program_version = '0.4'
 
 class container():
     def __str__(self):
@@ -68,6 +69,8 @@ def main():
     args = parser.parse_args()
 
     # Phase 1: parse URL
+
+    if args.URL[-1]=='/': args.URL = args.URL[0:-1] # Remove trailing /
 
     url = urlparse(args.URL)
     
@@ -108,15 +111,29 @@ def main():
 
     if args.info: sys.exit() # Just show summary
 
-
     # Create comic directory and descriprion
+
     Path(dir_name).mkdir(parents=True, exist_ok=True) # Make dir
     desc_file = f"{dir_name}/description-{comic_title}.txt"
     open(desc_file,'w').write(description_text)
     
+    if args.first_page: first_page = min(args.first_page, last_page)
+    if args.last_page: last_page = min(last_page, args.last_page)
 
-    if args.first_page: first_page = args.first_page
-    if args.last_page: last_page = args.last_page
+    if args.new: # Take number of last loaded page
+        pages = os.listdir(dir_name)
+        max_page = 1
+        for page in pages:
+            p = page.split('-')
+            if p[0] == 'page' and len(p) > 1:
+                try:
+                    n = int(p[1])
+                    if n > max_page: max_page = n
+                except: pass
+        first_page = min(max_page+1, last_page)
+        if first_page == last_page:
+            print(f"No new pictures found after {first_page}, nothing to download\n")
+            sys.exit(0)
 
     source_url += f"/{first_page}"
 
