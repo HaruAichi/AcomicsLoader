@@ -4,10 +4,11 @@
 # Developed by Aichi Haru
 # Strongly violates authors "no download" right :)
 
-# Version 0.5 (2023-10-29)
+# Version 0.6 (2023-10-29)
 
 # --- Change log ---
 
+# Version 0.6 (2023-10-29) - Minor fixes
 # Version 0.5 (2023-10-29) - Ctrl-C: SIGINT handler added
 # Version 0.4 (2023-10-29) - --new key added, some first-last page fixes
 # Version 0.3 (2023-10-21) - ageRestrict cookie set to avoid content limitations
@@ -31,7 +32,7 @@ from urllib.parse import urlparse
 from pathlib import Path
 
 program_name = 'Acomics serial image grabber'
-program_version = '0.5'
+program_version = '0.6'
 
 class container():
     def __str__(self):
@@ -78,6 +79,7 @@ def main():
     # Phase 1: parse URL
 
     if args.URL[-1]=='/': args.URL = args.URL[0:-1] # Remove trailing /
+    if args.DIR and args.DIR[-1]=='/': args.DIR = args.DIR[0:-1] # Remove trailing /
 
     url = urlparse(args.URL)
     
