@@ -4,33 +4,34 @@
 # Developed by Aichi Haru
 # Strongly violates authors "no download" right :)
 
-# Version 0.4 (2023-10-29)
+# Version 0.5 (2023-10-29)
 
 # --- Change log ---
 
+# Version 0.5 (2023-10-29) - Ctrl-C: SIGINT handler added
 # Version 0.4 (2023-10-29) - --new key added, some first-last page fixes
 # Version 0.3 (2023-10-21) - ageRestrict cookie set to avoid content limitations
 # Version 0.2 (2023-06-23) - --info key added
 # Version 0.1 (2023-06-16) - Initial release
 
+# --- Prerequisites ---
 
-# Prerequisites
 # 1. python3
 # 2. beautifulsoup v4. Install like apt-get install python3-bs4, pip3 install beautifulsoup4 or somehow either
-# 3. argparse modile
-
+# 3. argparse module
 
 import os,sys
 import time
 import bs4
 import argparse
 import requests
+import signal
 
 from urllib.parse import urlparse
 from pathlib import Path
 
 program_name = 'Acomics serial image grabber'
-program_version = '0.4'
+program_version = '0.5'
 
 class container():
     def __str__(self):
@@ -48,6 +49,10 @@ def get_parsed_page(url):
         reply.message = f'Cannot load data from {url}'
     return reply
     
+
+def handle_ctrl_c(signum, frame):
+    print(f"\nWarning: Interrupted by user request (Ctrl+C)\n")
+    sys.exit(1)
 
 # -[ The mainest main() ]-
 
@@ -67,6 +72,8 @@ def main():
     parser.add_argument('DIR',  nargs="?", help='Optional directory path')
     
     args = parser.parse_args()
+
+    signal.signal(signal.SIGINT, handle_ctrl_c)
 
     # Phase 1: parse URL
 
