@@ -4,10 +4,11 @@
 # Developed by Aichi Haru
 # Strongly violates authors "no download" right :)
 
-# Version 0.6 (2023-10-29)
+# Version 0.7 (2023-10-30)
 
 # --- Change log ---
 
+# Version 0.7 (2023-10-30) - Last page download bugfix in --new mode
 # Version 0.6 (2023-10-29) - Minor fixes
 # Version 0.5 (2023-10-29) - Ctrl-C: SIGINT handler added
 # Version 0.4 (2023-10-29) - --new key added, some first-last page fixes
@@ -32,7 +33,7 @@ from urllib.parse import urlparse
 from pathlib import Path
 
 program_name = 'Acomics serial image grabber'
-program_version = '0.6'
+program_version = '0.7'
 
 class container():
     def __str__(self):
@@ -139,10 +140,12 @@ def main():
                     n = int(p[1])
                     if n > max_page: max_page = n
                 except: pass
-        first_page = min(max_page+1, last_page)
+        first_page = min(max_page, last_page)
         if first_page == last_page:
             print(f"No new pictures found after {first_page}, nothing to download\n")
             sys.exit(0)
+        else:
+            first_page = max_page+1
 
     source_url += f"/{first_page}"
 
@@ -150,7 +153,10 @@ def main():
     page_iterator = first_page
     dir_made = False
 
-    print(f"Downloading pages {first_page}..{last_page}\n")
+    if first_page == last_page:
+        print(f"Downloading page {last_page}\n")
+    else:
+        print(f"Downloading pages {first_page}..{last_page}\n")
     
     # Phase 2: grab images
 

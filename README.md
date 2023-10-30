@@ -1,6 +1,6 @@
 # AcomicsLoader
 
-Acomics serial image grabber v.0.6
+Acomics serial image grabber v.0.7
 
 One more picture loader for acomics.ru :)
 
