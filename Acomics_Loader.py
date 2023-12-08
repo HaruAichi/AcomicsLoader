@@ -4,10 +4,11 @@
 # Developed by Aichi Haru
 # Strongly violates authors "no download" right :)
 
-# Version 0.7 (2023-10-30)
+# Version 0.8 (2023-12-05)
 
 # --- Change log ---
 
+# Version 0.8 (2023-12-05) - Age restriction cookie set tu 21 years
 # Version 0.7 (2023-10-30) - Last page download bugfix in --new mode
 # Version 0.6 (2023-10-29) - Minor fixes
 # Version 0.5 (2023-10-29) - Ctrl-C: SIGINT handler added
@@ -33,7 +34,7 @@ from urllib.parse import urlparse
 from pathlib import Path
 
 program_name = 'Acomics serial image grabber'
-program_version = '0.7'
+program_version = '0.8'
 
 class container():
     def __str__(self):
@@ -163,7 +164,7 @@ def main():
     while True:
     
         step_timer = f"{int(time.time()-start_time):05} sec"
-        source = requests.get(source_url, cookies={"ageRestrict":"17"})
+        source = requests.get(source_url, cookies={"ageRestrict":"21"})
         if (source.status_code == 200):
         
             # print(source.text)
@@ -211,4 +212,3 @@ if __name__ == "__main__":
     main()
 
 # -[ The end ]-
-
